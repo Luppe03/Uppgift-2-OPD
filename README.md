@@ -1,5 +1,7 @@
 OPD - Uppgift 2: Sensorövervakningssystem
 
+https://github.com/Luppe03/Uppgift-2-OPD.git
+
 Översikt: Denna uppgift bygger på Uppgift 1 och simulerar ett system som samlar in, lagrar och analyserar data från olika sensorer, tröskelbaserade larm har lagts till.
 
 Programmet är skrivet i C++17 och använder arv, polymorfism och smarta pekare. 
