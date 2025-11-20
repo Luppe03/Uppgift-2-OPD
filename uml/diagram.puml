@@ -1,0 +1,89 @@
+
+# Fil: `uml/diagram.puml` (PlantUML)
+```puml
+@startuml
+title UML - SensorSystem (INL2)
+
+abstract class Sensor {
+  +virtual ~Sensor()
+  +virtual double read()
+  +virtual string name() const
+  +virtual string unit() const
+}
+
+class TemperatureSensor {
+  -string id_
+  -double minV_, maxV_
+  +TemperatureSensor(string id, double minV, double maxV)
+  +double read()
+  +string name() const
+  +string unit() const
+}
+class HumiditySensor {
+  -string id_
+  -double minV_, maxV_
+  +HumiditySensor(string id, double minV, double maxV)
+  +double read()
+  +string name() const
+  +string unit() const
+}
+class PressureSensor {
+  -string id_
+  -double minV_, maxV_
+  +PressureSensor(string id, double minV, double maxV)
+  +double read()
+  +string name() const
+  +string unit() const
+}
+
+class Measurement {
+  +string sensorName
+  +double value
+  +time_point timestamp
+}
+
+class Storage {
+  -vector<Measurement> measurements_
+  +void add(const Measurement&)
+  +vector<Measurement> all() const
+  +bool saveCsv(string path)
+  +bool loadCsv(string path)
+}
+
+class Threshold {
+  +string sensorName
+  +double limit
+  +bool over
+}
+class Alert {
+  +string sensorName
+  +double value
+  +Threshold rule
+  +time_point timestamp
+}
+
+class SystemController {
+  -vector<unique_ptr<Sensor>> sensors_
+  -Storage storage_
+  -vector<Threshold> thresholds_
+  -vector<Alert> alerts_
+  +void addSensor(unique_ptr<Sensor>)
+  +void sampleAllOnce()
+  +void configureThresholdInteractive()
+  +void showAlerts() const
+  +void showStatsFor(const string&) const
+  +void saveMeasurements(const string&) const
+  +void loadMeasurements(const string&)
+}
+
+Sensor <|-- TemperatureSensor
+Sensor <|-- HumiditySensor
+Sensor <|-- PressureSensor
+
+SystemController "1" o-- "many" Sensor : uses >
+SystemController "1" o-- "1" Storage : composes >
+SystemController "1" o-- "many" Threshold : maintains >
+SystemController "1" o-- "many" Alert : records >
+Storage "1" o-- "many" Measurement : stores >
+
+@enduml
